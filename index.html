@@ -51,7 +51,6 @@
             color: var(--primary-color);
         }
 
-
         h2 {
             font-family: 'Playfair Display', serif;
             font-size: 1.8rem;
@@ -59,7 +58,6 @@
             text-align: center;
             margin-bottom: 1rem;
         }
-
 
         nav {
             margin-top: 1.2rem;
@@ -122,23 +120,22 @@
 <header>
     <h1>Prague Castle Escape</h1>
     <nav>
-        <a href="pages/home.html" class="active">Home</a>
-        <a href="pages/leaderboards.html">Results</a>
-        <a href="pages/contact.html">Contact</a>
-        <a href="pages/privacy.html">Privacy</a>
+        <a href="pages/home.html" class="active" data-path="/">Home</a>
+        <a href="pages/results.html" data-path="/results">Results</a>
+        <a href="pages/contact.html" data-path="/contact">Contact</a>
+        <a href="pages/privacy.html" data-path="/privacy">Privacy</a>
     </nav>
 </header>
 
-    <main id="content-container">
-        <!-- Dynamically loaded content will appear here -->
-    </main>
+<main id="content-container">
+    <!-- Dynamically loaded content will appear here -->
+</main>
 
 <footer>
     &copy; Prague Castle Escape Team – All rights reserved
 </footer>
 
 <script>
-    // Select all nav links and the main content container
     const navLinks = document.querySelectorAll('nav a');
     const contentContainer = document.getElementById('content-container');
 
@@ -147,6 +144,7 @@
             const response = await fetch(url);
             contentContainer.innerHTML = await response.text();
 
+            // Dynamically add scripts
             const scripts = contentContainer.querySelectorAll('script');
             scripts.forEach(oldScript => {
                 const newScript = document.createElement('script');
@@ -160,19 +158,36 @@
         }
     };
 
-    // Load content when a nav link is clicked
-    navLinks.forEach(link => {
-        link.addEventListener('click', async (e) => {
-            e.preventDefault();
+    // Function to handle URL path change
+    const handleRouteChange = (path) => {
+        const normalizedPath = path === '/' ? '/home' : path;
+        const activeLink = [...navLinks].find(link => link.getAttribute('data-path') === normalizedPath);
 
-            // Remove active class from all
+        if (activeLink) {
             navLinks.forEach(l => l.classList.remove('active'));
-            link.classList.add('active');
-            await loadContent(link.getAttribute('href'));
+            activeLink.classList.add('active');
+        }
+        loadContent(`pages${normalizedPath}.html`);
+    };
+
+    // Add event listener for hash change (in case of client-side routing)
+    window.addEventListener('popstate', (e) => {
+        handleRouteChange(window.location.pathname);
+    });
+
+    // Listen to clicks on the nav links
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const path = link.getAttribute('data-path');
+            window.history.pushState({}, '', path);
+            handleRouteChange(path);
         });
     });
 
-    loadContent("pages/home.html");
+    // On page load, check for the path and load content
+    const currentPath = window.location.pathname;
+    handleRouteChange(currentPath === '/' ? '/home' : currentPath);
 
 </script>
 

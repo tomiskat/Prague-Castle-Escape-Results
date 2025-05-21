@@ -9,3 +9,21 @@ To explore the mobile app version of the game, visit the [Prague Castle Escape G
 - **Backend**: Netlify Functions (serverless, only cloud functions)
 - **Database**: Google Firestore
 - **Hosting**: Deployed via [Netlify](https://www.netlify.com/)
+
+
+## 🛠️ Install & Development
+
+1. **Clone the repository**
+   ```bash
+   git clone git@github.com:tomiskat/Prague-Castle-Escape-Web.git
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**
+   ```bash
+   npm run dev
+   ```

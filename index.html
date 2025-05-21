@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Free outdoor mobile escape game in Prague Castle. Explore, solve puzzles and uncover the secret of the Holy Grail." />
+    <meta name="keywords" content="Prague, escape game, outdoor game, mobile game, free game, Holy Grail, Prague Castle" />
+    <meta name="author" content="Prague Castle Escape Team" />
+    <link rel="icon" href="assets/logo.png" type="image/png" />
+    <title>Prague Castle Escape</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet" />
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary-color: #4A90E2;
+            --secondary-color: #50E3C2;
+            --dark-background: #2C3E50;
+            --light-background: #F4F7F6;
+            --text-color: #333;
+            --light-text-color: #ECF0F1;
+            --border-radius: 8px;
+            --transition-speed: 0.3s ease;
+            --hover-scale: 1.05;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--light-text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+            background: var(--light-background);
+        }
+
+        header {
+            background: var(--dark-background);
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            color: var(--primary-color);
+        }
+
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+
+        nav {
+            margin-top: 1.2rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--light-text-color);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: color var(--transition-speed);
+            cursor: pointer;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary-color);
+            transition: width var(--transition-speed);
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #fff;
+        }
+
+        nav a:hover::after,
+        nav a.active::after {
+            width: 100%;
+        }
+
+        main {
+            flex: 1;
+            width: 100%;
+            max-width: 900px;
+            padding: 1.5rem 1rem;
+            margin: 0 auto;
+            background: white;
+        }
+
+        footer {
+            background: var(--dark-background);
+            color: var(--light-text-color);
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.9rem;
+        }
+
+    </style>
+</head>
+<body>
+<header>
+    <h1>Prague Castle Escape</h1>
+    <nav>
+        <a href="pages/home.html" class="active">Home</a>
+        <a href="pages/leaderboards.html">Results</a>
+        <a href="pages/contact.html">Contact</a>
+        <a href="pages/privacy.html">Privacy</a>
+    </nav>
+</header>
+
+    <main id="content-container">
+        <!-- Dynamically loaded content will appear here -->
+    </main>
+
+<footer>
+    &copy; Prague Castle Escape Team – All rights reserved.
+</footer>
+
+<script>
+    // Select all nav links and the main content container
+    const navLinks = document.querySelectorAll('nav a');
+    const contentContainer = document.getElementById('content-container');
+
+    const loadContent = async (url) => {
+        try {
+            const response = await fetch(url);
+            contentContainer.innerHTML = await response.text();
+
+            const scripts = contentContainer.querySelectorAll('script');
+            scripts.forEach(oldScript => {
+                const newScript = document.createElement('script');
+                newScript.classList.add('dynamic-script');
+                newScript.textContent = oldScript.textContent;
+                document.body.appendChild(newScript);
+            });
+        }
+        catch (error) {
+            console.error('Error loading content:', error);
+        }
+    };
+
+    // Load content when a nav link is clicked
+    navLinks.forEach(link => {
+        link.addEventListener('click', async (e) => {
+            e.preventDefault();
+
+            // Remove active class from all
+            navLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+            await loadContent(link.getAttribute('href'));
+        });
+    });
+
+    loadContent("pages/home.html");
+
+</script>
+
+</body>
+</html>

@@ -4,13 +4,14 @@
   "description": "Helper repository for project Prague Castle Escape. Use Netlify to create cloud functions.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "netlify dev",
+    "test": "echo \"No test specified\" && exit 0"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@netlify/functions": "^3.0.0",
-    "firebase": "^11.1.0"
+    "firebase": "^11.7.3"
   }
 }

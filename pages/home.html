@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet" />
+    <style>
+        .intro-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .teaser {
+            max-width: 600px;
+            background: var(--light-background);
+            border: 1px solid var(--secondary-color);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        .qr-code img {
+            width: 140px;
+            padding: 0.1rem;
+        }
+
+        .steps {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 3rem;
+            padding: 0 1rem;
+        }
+
+        .steps article {
+            flex: 1 1 220px;
+            max-width: 300px;
+        }
+
+        .steps .details {
+            flex: 1 1 100%;
+        }
+
+        .steps article {
+            background: var(--dark-background);
+            border: 1px solid var(--secondary-color);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform var(--transition-speed);
+            color: var(--light-text-color);
+        }
+
+        .steps article:hover {
+            transform: translateY(-4px);
+        }
+
+        .icon {
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .details {
+            background-color: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            max-width: 400px;
+            margin: auto;
+        }
+
+        .details h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 0.5rem;
+        }
+
+        .details dl {
+            display: grid;
+            row-gap: 0.75rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .detail-row dt {
+            font-weight: 600;
+            margin-right: 1rem;
+            white-space: nowrap;
+        }
+
+        .detail-row dd {
+            margin: 0;
+            text-align: right;
+            flex: 1;
+        }
+
+        .gallery {
+            margin-top: 3rem;
+        }
+
+        .map {
+            margin-top: 3rem;
+        }
+
+        .shots {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .shots img {
+            height: 220px;
+            flex: 0 0 auto;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--secondary-color);
+            cursor: pointer;
+            transition: transform var(--transition-speed);
+        }
+
+        .shots img:hover {
+            transform: scale(1.05);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(44, 62, 80, 0.95); /* dark-background with opacity */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: var(--border-radius);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .map-section {
+            margin: 1rem auto 0;
+            width: 100%;
+            max-width: 600px;
+            aspect-ratio: 1/1;
+            border: 1px solid var(--secondary-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .map-section iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .map-description {
+            text-align: center;
+            font-style: italic;
+            color: #9b9bad;
+            margin-top: 0.8rem;
+        }
+
+        .map-title {
+            text-align: center;
+            font-size: 1.8rem;
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-color);
+            margin: 1rem;
+        }
+
+        .thumbnail-strip {
+            position: absolute;
+            bottom: 20px;
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            width: 100%;
+            padding: 0.5rem;
+            background: rgba(44, 62, 80, 0.85);
+            overflow-x: auto;
+        }
+
+        .thumbnail-strip img {
+            height: 60px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            transition: transform 0.2s, border 0.2s;
+        }
+
+        .thumbnail-strip img.active-thumb {
+            border-color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+    </style>
+</head>
+<body>
+
+<main>
+    <section class="intro-section">
+        <div class="teaser">
+            <h2>The Holy Grail Secret</h2>
+            <p>
+                As shadows stretch across the ancient stones of Prague Castle, a secret stirs in the silence:
+                <em>"The Grail is not lost... it waits"</em>
+                Gather your friends and embark on an adventure — the Holy Grail awaits.
+            </p>
+
+        </div>
+
+        <div class="qr-code">
+            <img
+                    src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://play.google.com/store/apps/details?id=com.example.praguecastleescape"
+                    alt="Download Prague Castle Escape"
+            />
+            <div class="qr-caption">
+                <a href="https://play.google.com/store/apps/details?id=com.example.praguecastleescape" target="_blank" rel="noopener">
+                    <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play"/>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="steps">
+        <article>
+            <h3>Explore</h3>
+            <span class="icon">🧭</span>
+            <p>Visit iconic landmarks like Prague Castle’s Royal Gardens and the Waldstein Garden.</p>
+        </article>
+
+        <article class="details">
+            <h3>Game Details</h3>
+            <dl>
+                <div class="detail-row">
+                    <dt>🕒 Duration:</dt>
+                    <dd>1.5 – 2.5 hours</dd>
+                </div>
+                <div class="detail-row">
+                    <dt>📅 Season:</dt>
+                    <dd>April – October</dd>
+                </div>
+                <div class="detail-row">
+                    <dt>🕰️ Time:</dt>
+                    <dd>10:00 – 19:00</dd>
+                </div>
+                <div class="detail-row">
+                    <dt>💰 Price:</dt>
+                    <dd><strong>Completely free!</strong></dd>
+                </div>
+            </dl>
+        </article>
+
+
+        <article>
+            <h3>Challenge</h3>
+            <span class="icon">🧩</span>
+            <p>Uncover hidden ciphers, solve brain-teasing riddles, and prove your wit.</p>
+        </article>
+    </section>
+
+
+    <section class="gallery">
+        <h2>Inside the Game</h2>
+        <div class="shots">
+            <img src="../assets/game_image_01.jpg" alt="Locked gate" data-index="0"/>
+            <img src="../assets/game_image_02.jpg" alt="The trolls" data-index="1"/>
+            <img src="../assets/game_image_03.jpg" alt="The White Rabbit" data-index="2"/>
+            <img src="../assets/game_image_04.jpg" alt="Forest fortress" data-index="3"/>
+            <img src="../assets/game_image_05.jpg" alt="The Mirror man" data-index="4"/>
+        </div>
+    </section>
+
+    <section class="map">
+        <h2 class="map-title">Where to Play</h2>
+        <div class="map-section">
+            <iframe src="https://www.google.com/maps?q=50.092666,14.399083&z=15&output=embed"></iframe>
+        </div>
+        <div class="map-description">The game starts near Prague Castle tram station.</div>
+    </section>
+</main>
+
+
+<!-- Modal Viewer -->
+<div class="modal" id="imgModal">
+    <img id="modalImg" src="" alt="Enlarged view" />
+    <div class="thumbnail-strip" id="thumbnailStrip"></div>
+</div>
+
+<script>
+    (function() {
+
+        const images = document.querySelectorAll(".shots img");
+        const modal = document.getElementById("imgModal");
+        const modalImg = document.getElementById("modalImg");
+        const thumbnailStrip = document.getElementById("thumbnailStrip");
+        let currentIndex = 0;
+
+        function openModal(img) {
+            currentIndex = parseInt(img.dataset.index);
+            showImage(currentIndex);
+            modal.classList.add("active");
+            document.addEventListener("keydown", handleKeydown);
+        }
+
+        function closeModal(e) {
+            if (e.target === modal || e.target === modalImg) {
+                modal.classList.remove("active");
+                document.removeEventListener("keydown", handleKeydown);
+            }
+        }
+
+        function handleKeydown(e) {
+            if (e.key === "ArrowRight") {
+                currentIndex = (currentIndex + 1) % images.length;
+                showImage(currentIndex);
+            }
+            else if (e.key === "ArrowLeft") {
+                currentIndex = (currentIndex - 1 + images.length) % images.length;
+                showImage(currentIndex);
+            }
+            else if (e.key === "Escape") {
+                closeModal({ target: modal });
+            }
+        }
+
+        function showImage(index) {
+            modalImg.src = images[index].src;
+            updateThumbnails(index);
+        }
+
+        function updateThumbnails(activeIndex) {
+            thumbnailStrip.innerHTML = "";
+            images.forEach((img, idx) => {
+                const thumb = document.createElement("img");
+                thumb.src = img.src;
+                thumb.classList.toggle("active-thumb", idx === activeIndex);
+                thumb.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    currentIndex = idx;
+                    showImage(currentIndex);
+                });
+                thumbnailStrip.appendChild(thumb);
+            });
+        }
+
+        // Add click event listeners to images
+        images.forEach((img, index) => {
+            img.dataset.index = index;
+            img.addEventListener("click", () => openModal(img));
+        });
+
+        modal.addEventListener("click", closeModal);
+    })();
+</script>
+
+
+</body>
+</html>

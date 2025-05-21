@@ -1,130 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Free outdoor mobile escape game in Prague Castle. Explore, solve puzzles and uncover the secret of the Holy Grail." />
-    <meta name="keywords" content="Prague, escape game, outdoor game, mobile game, free game, Holy Grail, Prague Castle" />
-    <meta name="author" content="Prague Castle Escape Team" />
-    <link rel="icon" href="../assets/logo.png" type="image/png" />
-    <title>Prague Castle Escape – Home</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet" />
+    <title></title>
     <style>
-        /* Existing Styles... */
+        body {
+            color: var(--text-color);
+        }
 
-        /* New Styles */
-        .steps article {
-            background: var(--dark-background);
+        .text {
+            background: var(--light-background);
             border: 1px solid var(--secondary-color);
             border-radius: var(--border-radius);
             padding: 2rem;
+            display: table;
+            margin: 0 auto;
             text-align: center;
-            color: var(--light-text-color);
-            transition: transform var(--transition-speed);
         }
 
-        .steps article h3 {
-            font-size: 1.6rem;
-            margin-bottom: 0.5rem;
-            color: var(--primary-color);
-            font-family: 'Playfair Display', serif;
+        #contact {
+            max-width: 600px;
+            margin: 2.5rem auto;
         }
 
-        .steps article .icon {
-            font-size: 3rem;
-            margin-bottom: 0.6rem;
-        }
-
-        .steps article hr {
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border-radius: var(--border-radius);
             border: 1px solid #ccc;
-            margin: 1rem 0;
+            box-sizing: border-box;
         }
 
-        .steps article p {
+        button[type="submit"] {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: transform var(--transition-speed);
+            display: block;
+            margin: 0 auto;
             font-size: 1rem;
-            color: var(--text-color);
         }
 
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-            padding: 0 1rem;
+        button[type="submit"]:hover {
+            text-align: center;
+            transform: scale(1.05);
         }
 
-        .icon-text {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.8rem;
+        .support-container {
+            text-align: center;
         }
 
-        .icon-text .icon {
-            font-size: 2.5rem;
-            line-height: 1;
+        .support-container p {
+            margin-bottom: 1rem;
         }
 
-        .icon-text p {
-            margin: 0;
-            font-size: 1rem;
-            color: var(--text-color);
+        .support-container img {
+            height: 50px;
+            border-radius: var(--border-radius);
+            transition: transform var(--transition-speed);
+            cursor: pointer;
         }
 
+        .support-container img:hover {
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
 
 <main>
-    <!-- Other sections... -->
+    <section class="text">
+        <p>We'd love to hear from you - whether feedback, questions, or just saying hi.</p>
+    </section>
 
-    <section class="steps">
-        <!-- Explore Section -->
-        <article>
-            <h3>Explore</h3>
-            <hr />
-            <div class="icon-text">
-                <span class="icon">🧭</span>
-                <p>Visit iconic Prague Castle Royal Gardens, and the Waldstein Garden.</p>
-            </div>
-            <div class="icon-text">
-                <span class="icon">🧭</span>
-                <p>Visit iconic Prague Castle Royal Gardens, and the Waldstein Garden.</p>
-            </div>
-        </article>
+    <section id="contact">
+        <form name="contact" method="POST" data-netlify="true">
+            <input type="hidden" name="form-name" value="contact" />
 
-        <!-- Solve Section -->
-        <article>
-            <h3>Solve</h3>
-            <hr />
-            <div class="icon-text">
-                <span class="icon">🧩</span>
-                <p>Decipher ciphers, align runes and outsmart medieval guardians.</p>
-            </div>
-        </article>
+            <label for="email">Your Email:</label><br />
+            <input type="email" id="email" name="email" required /><br />
+
+            <label for="message">Message:</label><br />
+            <textarea id="message" name="message" rows="7" required></textarea><br />
+
+            <button type="submit">Send</button>
+        </form>
     </section>
 
 
-    <section class="steps">
-        <!-- Explore Section -->
-        <article>
-            <h3>Explore</h3>
-            <span class="icon">🧭</span>
-            <hr />
-            <p>Visit iconic Prague Castle Royal Gardens, and the Waldstein Garden.</p>
-        </article>
-
-        <!-- Solve Section -->
-        <article>
-            <h3>Solve</h3>
-            <span class="icon">🧩</span>
-            <hr />
-            <p>Decipher ciphers, align runes and outsmart medieval guardians.</p>
-        </article>
-    </section>
-
-    <!-- Other sections... -->
+    <div class="support-container">
+        <p>Enjoyed the game? Support author with a coffee!</p>
+        <a href="https://www.buymeacoffee.com/tomiskat" target="_blank" rel="noopener">
+            <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" />
+        </a>
+    </div>
 </main>
 
 </body>

@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 import { getFirestore, collection, getDocs, orderBy, query } from "firebase/firestore";
 import { Handler } from "@netlify/functions";
 
@@ -12,6 +13,10 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const appCheck = initializeAppCheck(app, {
+    provider: new ReCaptchaV3Provider(process.env.RECAPTCHA_SITE_KEY!),
+    isTokenAutoRefreshEnabled: true
+});
 const db = getFirestore(app);
 
 const handler: Handler = async () => {

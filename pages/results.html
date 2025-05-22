@@ -124,7 +124,8 @@
 </main>
 
 <script>
-    (function() {
+    // Initialize Firebase
+    (function () {
         function initializePagination() {
             let filteredData = [];
             let allData = [];
@@ -173,29 +174,27 @@
             return row;
         }
 
-
         async function loadData() {
             console.log("Loading data...");
-            const url = "/../.netlify/functions/load_data";
+            try {
+                const snapshot = await db.collection("results").orderBy("duration").get();
+                const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                console.log("Data loaded: ", data);
 
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Data loaded: ", data);  // Add this line to log the data
-                    if (data && data.length > 0) {
-                        processData(data);
-                        renderTable();
-                        updatePaginationText();
-                    }
-                    else {
-                        displayEmptyTable("No data available");
-                    }
-                })
-                .catch(() => {
-                    displayEmptyTable("Error loading data");
-                });
+                if (data.length > 0) {
+                    processData(data);
+                    renderTable();
+                    updatePaginationText();
+                }
+                else {
+                    displayEmptyTable("No data available");
+                }
+            }
+            catch (error) {
+                console.error("Error loading data:", error);
+                displayEmptyTable("Error loading data");
+            }
         }
-
 
         function processData(data) {
             allData = [];
@@ -204,8 +203,7 @@
             data.forEach(item => {
                 const row = createTableRow(position, item);
                 position++;
-                console.log(row)
-                allData.push({row: row, team: item['id']});
+                allData.push({ row: row, team: item['id'] });
             });
         }
 
@@ -221,20 +219,16 @@
         }
 
         function renderTable() {
-            // Filter data based on search query
             const searchQuery = document.getElementById("searchField").value.trim().toLowerCase();
             filteredData = allData.filter(item => item.team.toLowerCase().includes(searchQuery));
 
-            // Clear existing table rows
             const tableBody = document.getElementById("tableBody");
             tableBody.innerHTML = "";
 
-            // Calculate start and end indices
             const start = (currentPage - 1) * itemsPerPage;
             const end = currentPage * itemsPerPage;
             const pageData = filteredData.slice(start, end);
 
-            // Append rows to the table
             pageData.forEach(item => {
                 tableBody.appendChild(item.row);
             });
@@ -246,16 +240,15 @@
 
             const totalPages = Math.ceil(filteredData.length / itemsPerPage);
             const paginationData = [
-                {id: 'start', text: '<<'},
-                {id: 'back2', text: currentPage - 2},
-                {id: 'back1', text: currentPage - 1},
-                {id: 'current', text: currentPage},
-                {id: 'next1', text: currentPage + 1},
-                {id: 'next2', text: currentPage + 2},
-                {id: 'end', text: '>>'}
+                { id: 'start', text: '<<' },
+                { id: 'back2', text: currentPage - 2 },
+                { id: 'back1', text: currentPage - 1 },
+                { id: 'current', text: currentPage },
+                { id: 'next1', text: currentPage + 1 },
+                { id: 'next2', text: currentPage + 2 },
+                { id: 'end', text: '>>' }
             ];
 
-            // Iterate over pagination elements and update them
             Array.from(paginationElements).forEach(element => {
                 const item = paginationData.find(p => p.id === element.id);
                 const isValidPage = (element.id === 'start' && currentPage > 3) ||
@@ -310,7 +303,6 @@
         addPaginationListeners();
         addSearchFieldListener();
         addResetButtonListener();
-
     })();
 </script>
 </body>

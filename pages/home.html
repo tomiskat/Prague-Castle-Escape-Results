@@ -21,9 +21,9 @@
         }
 
         .qr-code img {
-            width: 140px;
-            padding: 0.1rem;
+            width: 150px;
         }
+
 
         .steps {
             display: flex;
@@ -209,6 +209,18 @@
         .thumbnail-strip img.active-thumb {
             border-color: var(--primary-color);
             transform: scale(1.05);
+        }
+
+        @media (max-width: 600px) {
+            .qr-code img {
+                width: 60vw;
+                max-width: 250px;
+            }
+
+            .qr-caption img {
+                width: 60vw;
+                max-width: 250px;
+            }
         }
 
     </style>

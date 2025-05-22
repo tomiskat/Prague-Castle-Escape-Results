@@ -10,6 +10,12 @@
     <link rel="icon" href="assets/logo.png" type="image/png" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet" />
     <title>Prague Castle Escape</title>
+
+    <!-- Add Firebase scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-check-compat.js"></script>
+
     <style>
         *, *::before, *::after {
             box-sizing: border-box;
@@ -120,10 +126,10 @@
 <header>
     <h1>Prague Castle Escape</h1>
     <nav>
-        <a href="pages/home.html" class="active" data-path="/home">Home</a>
-        <a href="pages/results.html" data-path="/results">Results</a>
-        <a href="pages/contact.html" data-path="/contact">Contact</a>
-        <a href="pages/privacy.html" data-path="/privacy">Privacy</a>
+        <a href="/" class="active" data-path="home">Home</a>
+        <a href="/results" data-path="results">Results</a>
+        <a href="/contact" data-path="contact">Contact</a>
+        <a href="/privacy" data-path="privacy">Privacy</a>
     </nav>
 </header>
 
@@ -139,57 +145,64 @@
     const navLinks = document.querySelectorAll('nav a');
     const contentContainer = document.getElementById('content-container');
 
-    const loadContent = async (url) => {
+    async function loadContent(view) {
         try {
-            const response = await fetch(url);
-            contentContainer.innerHTML = await response.text();
+            const res = await fetch(`pages/${view}.html`);
+            contentContainer.innerHTML = await res.text();
 
-            // Dynamically add scripts
-            const scripts = contentContainer.querySelectorAll('script');
-            scripts.forEach(oldScript => {
-                const newScript = document.createElement('script');
-                newScript.classList.add('dynamic-script');
-                newScript.textContent = oldScript.textContent;
-                document.body.appendChild(newScript);
+            contentContainer.querySelectorAll('script').forEach(oldScript => {
+                const script = document.createElement('script');
+                script.textContent = oldScript.textContent;
+                document.body.appendChild(script);
             });
         }
-        catch (error) {
-            console.error('Error loading content:', error);
+        catch (err) {
+            console.error('Error loading content:', err);
+            contentContainer.innerHTML = "<p>Page not found.</p>";
         }
-    };
+    }
 
-    // Function to handle URL path change
-    const handleRouteChange = (path) => {
-        const normalizedPath = path === '/' ? '/home' : path;
-        const activeLink = [...navLinks].find(link => link.getAttribute('data-path') === normalizedPath);
+    function setActive(path) {
+        navLinks.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === path);
+        });
+    }
 
-        if (activeLink) {
-            navLinks.forEach(l => l.classList.remove('active'));
-            activeLink.classList.add('active');
-        }
-        loadContent(`pages${normalizedPath}.html`);
-    };
+    function handleRoute(path) {
+        const route = path === '/' ? 'home' : path;
+        loadContent(route);
+        setActive(path);
+    }
 
-    // Add event listener for hash change (in case of client-side routing)
-    window.addEventListener('popstate', (e) => {
-        handleRouteChange(window.location.pathname);
-    });
-
-    // Listen to clicks on the nav links
     navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
+        link.addEventListener('click', e => {
             e.preventDefault();
-            const path = link.getAttribute('data-path');
-            window.history.pushState({}, '', path);
-            handleRouteChange(path);
+            const urlPath = link.getAttribute('href');
+            history.pushState({}, '', urlPath);
+            handleRoute(urlPath);
         });
     });
 
-    // On page load, check for the path and load content
-    const currentPath = window.location.pathname;
-    handleRouteChange(currentPath === '/' ? '/home' : currentPath);
+    window.addEventListener('popstate', () => {
+        handleRoute(window.location.pathname);
+    });
 
+    // Initial load
+    handleRoute(window.location.pathname);
+
+    // Firebase setup
+    const firebaseConfig = {
+        apiKey: "AIzaSyCtUvTQlQ_bzQIwpsGChJdHYoONMiBLYOM",
+        authDomain: "prague-castle-escape.firebaseapp.com",
+        projectId: "prague-castle-escape",
+        storageBucket: "prague-castle-escape.appspot.com",
+        messagingSenderId: "881766941895",
+        appId: "1:881766941895:web:2e48cdccfed83da176eae2"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    firebase.appCheck().activate("6LfMBEUrAAAAADTg8yMnRMG5hLJY2hl7SK_aOgom", true);
+    const db = firebase.firestore();
 </script>
-
 </body>
 </html>

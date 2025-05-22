@@ -177,6 +177,7 @@
         async function loadData() {
             console.log("Loading data...");
             try {
+                const db = await loadFirebase();
                 const snapshot = await db.collection("results").orderBy("duration").get();
                 const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 console.log("Data loaded: ", data);

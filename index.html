@@ -149,7 +149,6 @@
         try {
             const res = await fetch(`pages/${view}.html`);
             contentContainer.innerHTML = await res.text();
-
             contentContainer.querySelectorAll('script').forEach(oldScript => {
                 const script = document.createElement('script');
                 script.textContent = oldScript.textContent;
@@ -200,9 +199,19 @@
         appId: "1:881766941895:web:2e48cdccfed83da176eae2"
     };
 
-    firebase.initializeApp(firebaseConfig);
-    firebase.appCheck().activate("6Lc8cEUrAAAAAMOqJ4qfqH1hINuTQR6ShIgJbB31", true);
-    const db = firebase.firestore();
+    // Firebase initialization
+    let db = null;
+
+    async function loadFirebase() {
+        if (!db) {
+            firebase.initializeApp(firebaseConfig);
+            firebase.appCheck().activate("6Lc8cEUrAAAAAMOqJ4qfqH1hINuTQR6ShIgJbB31", true);
+            db = firebase.firestore();
+        }
+        return db;
+    }
+    loadFirebase().catch(err => console.error("Firebase preload error:", err));
+
 </script>
 </body>
 </html>

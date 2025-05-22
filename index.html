@@ -11,11 +11,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet" />
     <title>Prague Castle Escape</title>
 
-    <!-- Add Firebase scripts -->
-    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-check-compat.js"></script>
-
     <style>
         *, *::before, *::after {
             box-sizing: border-box;
@@ -182,28 +177,45 @@
         });
     });
 
+    // Initial load
+    handleRoute(window.location.pathname);
+
+    // Popstate event
     window.addEventListener('popstate', () => {
         handleRoute(window.location.pathname);
     });
 
-    // Initial load
-    handleRoute(window.location.pathname);
 
-    // Firebase setup
-    const firebaseConfig = {
-        apiKey: "AIzaSyCtUvTQlQ_bzQIwpsGChJdHYoONMiBLYOM",
-        authDomain: "prague-castle-escape.firebaseapp.com",
-        projectId: "prague-castle-escape",
-        storageBucket: "prague-castle-escape.appspot.com",
-        messagingSenderId: "881766941895",
-        appId: "1:881766941895:web:2e48cdccfed83da176eae2"
-    };
+    // Load scripts from url
+    async function loadScript(src) {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+        });
+    }
 
-    // Firebase initialization
+    // Firebase database setup
     let db = null;
-
+    // Load firebase
     async function loadFirebase() {
         if (!db) {
+            // Load Firebase scripts
+            await loadScript("https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js");
+            await loadScript("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js");
+            await loadScript("https://www.gstatic.com/firebasejs/10.11.0/firebase-app-check-compat.js");
+
+            // Initialize Firebase
+            const firebaseConfig = {
+                apiKey: "AIzaSyCtUvTQlQ_bzQIwpsGChJdHYoONMiBLYOM",
+                authDomain: "prague-castle-escape.firebaseapp.com",
+                projectId: "prague-castle-escape",
+                storageBucket: "prague-castle-escape.appspot.com",
+                messagingSenderId: "881766941895",
+                appId: "1:881766941895:web:2e48cdccfed83da176eae2"
+            };
             firebase.initializeApp(firebaseConfig);
             firebase.appCheck().activate("6Lc8cEUrAAAAAMOqJ4qfqH1hINuTQR6ShIgJbB31", true);
             db = firebase.firestore();

@@ -10,9 +10,11 @@
     <link rel="icon" href="assets/logo.png" type="image/png" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet" />
     <title>Prague Castle Escape</title>
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-check-compat.js"></script>
+
 
     <style>
         *, *::before, *::after {
@@ -188,13 +190,11 @@
         handleRoute(window.location.pathname);
     });
 
-
     // Firebase database setup
     let db = null;
-    // Load firebase
     async function loadFirebase() {
         if (!db) {
-            // Initialize Firebase
+            // Configure Firebase
             const firebaseConfig = {
                 apiKey: "AIzaSyCtUvTQlQ_bzQIwpsGChJdHYoONMiBLYOM",
                 authDomain: "prague-castle-escape.firebaseapp.com",
@@ -204,6 +204,7 @@
                 appId: "1:881766941895:web:2e48cdccfed83da176eae2"
             };
 
+            // Initialize Firebase
             firebase.initializeApp(firebaseConfig);
             firebase.appCheck().activate("6Lc8cEUrAAAAAMOqJ4qfqH1hINuTQR6ShIgJbB31", true);
             db = firebase.firestore();

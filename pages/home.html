@@ -122,7 +122,6 @@
         }
 
         .shots img {
-            height: 220px;
             flex: 0 0 auto;
             border-radius: var(--border-radius);
             border: 1px solid var(--secondary-color);
@@ -295,19 +294,26 @@
     <section class="gallery">
         <h2>Inside the Game</h2>
         <div class="shots">
-            <img src="../assets/image.png" loading="lazy" alt="Locked gate" data-index="0"/>
-            <img src="../assets/image.png" loading="lazy" alt="The trolls" data-index="1"/>
-            <img src="../assets/image.png" loading="lazy" alt="The White Rabbit" data-index="2"/>
-            <img src="../assets/image.png" loading="lazy" alt="Forest fortress" data-index="3"/>
-            <img src="../assets/image.png" loading="lazy" alt="The Mirror man" data-index="4"/>
+            <img src="../assets/game_image_01.webp" loading="lazy" alt="Locked gate" data-index="0" width="108" height="240"/>
+            <img src="../assets/game_image_02.webp" loading="lazy" alt="The trolls" data-index="1" width="108" height="240"/>
+            <img src="../assets/game_image_03.webp" loading="lazy" alt="The White Rabbit" data-index="2" width="108" height="240"/>
+            <img src="../assets/game_image_04.webp" loading="lazy" alt="Forest fortress" data-index="3" width="108" height="240"/>
+            <img src="../assets/game_image_05.webp" loading="lazy" alt="The Mirror man" data-index="4" width="108" height="240"/>
         </div>
     </section>
 
     <section class="map">
         <h2 class="map-title">Where to Play</h2>
         <div class="map-section">
-            <iframe src="https://www.google.com/maps?q=50.092666,14.399083&z=15&output=embed" title="Game Location"></iframe>
+            <iframe
+                    src="https://www.google.com/maps?q=50.092666,14.399083&z=15&output=embed"
+                    title="Game Location"
+                    loading="lazy"
+                    allowfullscreen
+                    referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
         </div>
+
         <div class="map-description">The game starts near Prague Castle tram station.</div>
     </section>
 </main>

@@ -318,7 +318,7 @@
 </div>
 
 <script>
-    (function() {
+    (function () {
 
         const images = document.querySelectorAll(".shots img");
         const modal = document.getElementById("imgModal");
@@ -326,17 +326,27 @@
         const thumbnailStrip = document.getElementById("thumbnailStrip");
         let currentIndex = 0;
 
+        let touchStartX = 0;
+        let touchEndX = 0;
+
         function openModal(img) {
             currentIndex = parseInt(img.dataset.index);
             showImage(currentIndex);
             modal.classList.add("active");
             document.addEventListener("keydown", handleKeydown);
+
+            // For Android back button
+            history.pushState({ modalOpen: true }, "");
         }
 
         function closeModal(e) {
-            if (e.target === modal || e.target === modalImg) {
+            if (!e || e.target === modal || e.target === modalImg) {
                 modal.classList.remove("active");
                 document.removeEventListener("keydown", handleKeydown);
+                // Only go back in history if modal is open
+                if (history.state && history.state.modalOpen) {
+                    history.back();
+                }
             }
         }
 
@@ -344,12 +354,10 @@
             if (e.key === "ArrowRight") {
                 currentIndex = (currentIndex + 1) % images.length;
                 showImage(currentIndex);
-            }
-            else if (e.key === "ArrowLeft") {
+            } else if (e.key === "ArrowLeft") {
                 currentIndex = (currentIndex - 1 + images.length) % images.length;
                 showImage(currentIndex);
-            }
-            else if (e.key === "Escape") {
+            } else if (e.key === "Escape") {
                 closeModal({ target: modal });
             }
         }
@@ -374,6 +382,31 @@
             });
         }
 
+        // Swipe gesture support
+        modal.addEventListener("touchstart", (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        modal.addEventListener("touchend", (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            if (touchEndX < touchStartX - 50) {
+                currentIndex = (currentIndex + 1) % images.length;
+                showImage(currentIndex);
+            }
+            if (touchEndX > touchStartX + 50) {
+                currentIndex = (currentIndex - 1 + images.length) % images.length;
+                showImage(currentIndex);
+            }
+        });
+
+        // Android back button support
+        window.addEventListener("popstate", (event) => {
+            if (modal.classList.contains("active")) {
+                modal.classList.remove("active");
+                document.removeEventListener("keydown", handleKeydown);
+            }
+        });
+
         // Add click event listeners to images
         images.forEach((img, index) => {
             img.dataset.index = index;
@@ -381,6 +414,7 @@
         });
 
         modal.addEventListener("click", closeModal);
+
     })();
 </script>
 
